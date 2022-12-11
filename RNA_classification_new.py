@@ -32,23 +32,23 @@ def dataClassification(X, y, X_test, y_test):
     X_validation = scaler.transform(X_validation)
     X_test = scaler.transform(X_test)
 
-    clfRnaModel = MLPClassifier() #Add param later.
-    trainedClfModel = clfRnaModel.fit(X_train, y_train)
+    rnaModel = MLPClassifier() #Add param later.
+    trainedModel = rnaModel.fit(X_train, y_train)
 
-    trainClfPredict = trainedClfModel.predict(X_train)
-    valClfPredict = trainedClfModel.predict(X_validation)
-    testClfPredict = trainedClfModel.predict(X_test)
+    trainPrediction = trainedModel.predict(X_train)
+    validationPrediction = trainedModel.predict(X_validation)
+    testPrediction = trainedModel.predict(X_test)
 
-    dataPrediction = [trainClfPredict, valClfPredict, testClfPredict]
+    dataPrediction = [trainPrediction, validationPrediction, testPrediction]
 
-    trainClfEval = classificationEvaluation(y_train, trainClfPredict)
-    valClfEval = classificationEvaluation(y_validation, valClfPredict)
-    testClfEval = classificationEvaluation(y_test, testClfPredict)
+    trainEvaluation = classificationEvaluation(y_train, trainPrediction)
+    validationEvaluation = classificationEvaluation(y_validation, validationPrediction)
+    testEvaluation = classificationEvaluation(y_test, testPrediction)
 
-    evalVarNames = ['Train', 'Validation', 'Test']
+    EvaluationNames = ['Train', 'Validation', 'Test']
 
-    return trainedClfModel, y_validation, X_train, y_train, dataPrediction, \
-           evalVarNames, trainClfEval, valClfEval, testClfEval
+    return trainedModel, y_validation, X_train, y_train, dataPrediction, \
+           EvaluationNames, trainEvaluation, validationEvaluation, testEvaluation
 
 # All classification evaluation for use. Returns their results.
 def classificationEvaluation(y, y_test):
@@ -97,8 +97,6 @@ def saveDataToExcel(X_train, y_train, y_validation, y_test, dataPredicted):
     gatheredData = pd.concat([oldSamples, dataDf])
     gatheredData.to_excel('Classification_data.xls', index=False)
 
-saveDataToExcel([2, 1], [3, 4], [6, 5], [10, 3], [[12, 3], [6, 54], [3, 45]])
-
 # Save trained RNA structure as a pickle file (series of bytes that can be converted back into python code)
 # for reproducibility in later uses.
 def serializingRnaStructure(rnaStructureName, rnaStructureVariable):
@@ -126,9 +124,9 @@ y_test = testSamples.iloc[:, -1]
 
 # Data classification (Model, X_validation, y_validation, X_train, y_train,
 # all y predicted, respective data set names, evaluation results).
-trainedModel, y_validation, X_train, y_train, dataPrediction, dataSet, y_train_eval, \
-y_validation_eval, y_test_eval = dataClassification(X, y, X_test, y_test)
-evaluationList = [y_train_eval, y_validation_eval, y_test_eval]
+trainedModel, y_validation, X_train, y_train, dataPrediction, dataSet, y_trainEvaluation, \
+y_validationEvaluation, y_testEvaluation = dataClassification(X, y, X_test, y_test)
+evaluationList = [y_trainEvaluation, y_validationEvaluation, y_testEvaluation]
 
 # Data classification plots (Confusion matrix and ROC curve [in progress]).
 confusionMatrixPlot(evaluationList)
