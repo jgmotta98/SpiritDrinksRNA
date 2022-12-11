@@ -30,23 +30,23 @@ def dataRegression(X, y, X_test, y_test):
     X_validation = scaler.transform(X_validation)
     X_test = scaler.transform(X_test)
 
-    regRnaModel = MLPRegressor() #Add param later.
-    trainedRegModel = regRnaModel.fit(X_train, y_train)
+    rnaModel = MLPRegressor() #Add param later.
+    trainedModel = rnaModel.fit(X_train, y_train)
 
-    trainRegPredict = trainedRegModel.predict(X_train)
-    valRegPredict = trainedRegModel.predict(X_validation)
-    testRegPredict = trainedRegModel.predict(X_test)
+    trainPrediction = trainedModel.predict(X_train)
+    validationPrediction = trainedModel.predict(X_validation)
+    testPrediction = trainedModel.predict(X_test)
 
-    dataPrediction = [trainRegPredict, valRegPredict, testRegPredict]
+    dataPrediction = [trainPrediction, validationPrediction, testPrediction]
 
-    trainRegEval = regressionEvaluation(y_train, trainRegPredict)
-    valRegEval = regressionEvaluation(y_validation, valRegPredict)
-    testRegEval = regressionEvaluation(y_test, testRegPredict)
+    trainEvaluation= regressionEvaluation(y_train, trainPrediction)
+    validationEvaluation = regressionEvaluation(y_validation, validationPrediction)
+    testEvaluation = regressionEvaluation(y_test, testPrediction)
 
-    evalVarNames = ['Train', 'Validation', 'Test']
+    evaluationNames = ['Train', 'Validation', 'Test']
 
-    return trainedRegModel, y_validation, X_train, y_train, dataPrediction, \
-           evalVarNames, trainRegEval, valRegEval, testRegEval
+    return trainedModel, y_validation, X_train, y_train, dataPrediction, \
+           evaluationNames, trainEvaluation, validationEvaluation, testEvaluation
 
 # All regression evaluation for use. Returns their results.
 def regressionEvaluation(y, y_test):
@@ -110,9 +110,9 @@ y_test = testSamples.iloc[:,-1]
 
 # Data regression (Model, X_validation, y_validation,
 # respective data set names, evaluation results).
-trainedModel, y_validation, X_train, y_train, dataPrediction, dataSet, y_train_eval, \
-y_validation_eval, y_test_eval = dataRegression(X, y, X_test, y_test)
-evaluationList = [y_train_eval, y_validation_eval, y_test_eval]
+trainedModel, y_validation, X_train, y_train, dataPrediction, dataSet, y_trainEvaluation, \
+y_validationEvaluation, y_testEvaluation = dataRegression(X, y, X_test, y_test)
+evaluationList = [y_trainEvaluation, y_validationEvaluation, y_testEvaluation]
 
 # Saving prediction data into an Excel worksheet.
 saveDataToExcel(X_train, y_train, y_validation, y_test, dataPrediction)
