@@ -29,14 +29,7 @@ def camCapture(sampleName, camNumber, camWidth, camHeight):
 def rgbToHsv(framesData):
     frameRgbWebcam = cv2.cvtColor(framesData[0], cv2.COLOR_BGR2RGB)
     meanRgbWebcam = np.mean(frameRgbWebcam, axis=(0, 1))
-    frameHsvWebcam = cv2.cvtColor(frameRgbWebcam, cv2.COLOR_RGB2HSV)
-    # Destination HSV data type from cv2.COLOR_RGB2HSV is: H/2 → H; 255S → S; 255V → V.
-    # Conversion is needed.
-    for i, framesHsv1 in enumerate(frameHsvWebcam):
-        for j, framesHsv2 in enumerate(framesHsv1):
-            framesHsv2[0] = framesHsv2[0] * 2
-            framesHsv2[1] = (framesHsv2[1] * 100) / 255
-            framesHsv2[2] = (framesHsv2[2] * 100) / 255
+    frameHsvWebcam = cv2.cvtColor(frameRgbWebcam, cv2.COLOR_RGB2HSV_FULL)
     meanHsvWebcam = np.mean(frameHsvWebcam, axis=(0, 1))
     return meanRgbWebcam, meanHsvWebcam, framesData[1]
 
